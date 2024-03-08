@@ -30,21 +30,28 @@ void bubble_sort(std::vector<int> &vec)
 
 void selection_sort(std::vector<int> &vec)
 {
-    int tallest{1};
-    int tallest_id{0};
+    int smallest{vec[0]};
+    int smallest_id{0};
+    for (int i{0}; i < vec.size(); i++)
+    {
+        if (vec[i] < vec[i + 1])
+        {
+            smallest = vec[i];
+        }
+    }
     while (!is_sorted(vec))
     {
         for (int i{0}; i < vec.size(); i++)
         {
-            if (vec[i] == tallest)
+            if (vec[i] == smallest)
             {
-                int tmp = vec[tallest_id];
-                vec[tallest_id] = tallest;
+                int tmp = vec[smallest_id];
+                vec[smallest_id] = smallest;
                 vec[i] = tmp;
-                tallest_id++;
+                smallest_id++;
             }
         }
-        tallest++;
+        smallest++;
     }
 }
 
