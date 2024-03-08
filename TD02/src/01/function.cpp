@@ -2,14 +2,6 @@
 #include <vector>
 #include "function.hpp"
 
-void display(std::vector<int> &vec)
-{
-    for (int i{0}; i < vec.size(); i++)
-    {
-        std::cout << vec[i] << ", ";
-    }
-}
-
 void bubble_sort(std::vector<int> &vec)
 {
     int j{1};
@@ -34,7 +26,7 @@ void selection_sort(std::vector<int> &vec)
     int smallest_id{0};
     for (int i{0}; i < vec.size(); i++)
     {
-        if (vec[i] < vec[i + 1])
+        if (vec[i] < smallest)
         {
             smallest = vec[i];
         }

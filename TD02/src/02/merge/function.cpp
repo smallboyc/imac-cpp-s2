@@ -2,14 +2,6 @@
 #include <vector>
 #include "function.hpp"
 
-void display(std::vector<float> &vec)
-{
-    for (int i{0}; i < vec.size(); i++)
-    {
-        std::cout << vec[i] << ", ";
-    }
-}
-
 void merge_sort_merge(std::vector<float> &vec, size_t const left, size_t const middle, size_t const right)
 {
     size_t LEFT_SIZE{middle - left + 1};
