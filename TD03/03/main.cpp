@@ -14,8 +14,8 @@ int main()
     std::cout << "Entrez une chaine : ";
     std::getline(std::cin, str);
     std::cout << str;
-    std::cout << std::endl;
-    std::vector<std::string> tokens{split_string(str)};
-    std::cout << npi_evaluate(tokens);
+    std::vector<Token> NPI_RESULT{infix_to_npi_tokens(str)};
+    display_NPI_Result(NPI_RESULT);
+
     return 0;
 }
