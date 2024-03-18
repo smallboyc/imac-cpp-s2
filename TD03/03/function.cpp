@@ -64,30 +64,48 @@ Token make_token(Operator op)
 
 std::vector<Token> tokenize(std::vector<std::string> const &words)
 {
-    std::vector<Token> EXIT{};
-    std::stack<Token> Operators;
+    std::vector<Token> EXIT;     // tableau final
+    std::stack<Token> Operators; // stack qui stock les opérateurs
+
     for (int i{0}; i < words.size(); i++)
     {
         if (is_floating(words[i]))
             EXIT.push_back(make_token(std::stof(words[i])));
-        else if (check_operator(words[i]) == Operator::CLOSE_PAREN)
-        {
-            while (Operators.top().op != Operator::OPEN_PAREN)
-            {
-                EXIT.push_back(Operators.top());
-                Operators.pop();
-            }
-            Operators.pop(); // Supprime la ( qui était le point d'arrêt
-        }
         else
-            Operators.push(make_token(check_operator(words[i])));
-
-        if (operator_precedence(Operators.top().op) >= operator_precedence(check_operator(words[i])))
         {
-            EXIT.push_back(Operators.top());
-            Operators.pop();
+            Operator current_op{check_operator(words[i])};
+
+            if (current_op == Operator::OPEN_PAREN)
+            {
+                Operators.push(make_token(current_op));
+            }
+            else if (current_op == Operator::CLOSE_PAREN)
+            {
+                while (!Operators.empty() && Operators.top().op != Operator::OPEN_PAREN)
+                {
+                    EXIT.push_back(Operators.top());
+                    Operators.pop();
+                }
+                Operators.pop(); // Supprime la (
+            }
+            else
+            {
+                while (!Operators.empty() && operator_precedence(Operators.top().op) >= operator_precedence(current_op))
+                {
+                    EXIT.push_back(Operators.top());
+                    Operators.pop();
+                }
+                Operators.push(make_token(current_op));
+            }
         }
     }
+
+    while (!Operators.empty())
+    {
+        EXIT.push_back(Operators.top());
+        Operators.pop();
+    }
+
     return EXIT;
 }
 
@@ -97,12 +115,14 @@ size_t operator_precedence(Operator const op)
         return 3;
     else if (op == Operator::MUL || op == Operator::DIV)
         return 2;
-    else
+    else if (op == Operator::ADD || op == Operator::SUB)
         return 1;
+    return 0;
 }
 
 std::vector<Token> infix_to_npi_tokens(std::string const &expression)
 {
+    // tokens = éléments divisés de la string de base dans un tableau
     std::vector<std::string> tokens{split_string(expression)};
     return tokenize(tokens);
 }

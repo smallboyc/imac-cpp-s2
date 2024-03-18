@@ -11,12 +11,11 @@
 int main()
 {
     std::string str{};
-    std::cout << "Entrez une chaine : ";
+    std::cout << "Entrez une chaine (notation infixe): ";
     std::getline(std::cin, str);
-    // std::cout << str;
-    // std::vector<Token> NPI_RESULT{infix_to_npi_tokens(str)};
-    infix_to_npi_tokens(str);
-    // display_NPI_Result(NPI_RESULT);
-
+    std::cout << str;
+    std::cout << std::endl;
+     std::cout << "notation NPI : ";
+    display_NPI_Result(infix_to_npi_tokens(str));
     return 0;
 }
