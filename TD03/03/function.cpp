@@ -50,8 +50,7 @@ std::string reverse_operator(Operator const &op)
         return "*";
     else if (op == Operator::DIV)
         return "/";
-    else if (op == Operator::POW)
-        return "^";
+    return "^";
 }
 
 Token make_token(float value)
@@ -66,7 +65,7 @@ Token make_token(Operator op)
 std::vector<Token> tokenize(std::vector<std::string> const &words)
 {
     std::vector<Token> EXIT{};
-    std::stack<Token> Operators{};
+    std::stack<Token> Operators;
     for (int i{0}; i < words.size(); i++)
     {
         if (is_floating(words[i]))
@@ -104,7 +103,6 @@ size_t operator_precedence(Operator const op)
 
 std::vector<Token> infix_to_npi_tokens(std::string const &expression)
 {
-
     std::vector<std::string> tokens{split_string(expression)};
     return tokenize(tokens);
 }
