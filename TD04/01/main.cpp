@@ -41,7 +41,7 @@ int main()
     std::cout << std::endl;
 
     // Nombre d'occurences de number
-    const int occurences = std::count(v.begin(), v.end(), 45);
+    const int occurences = std::count(v.begin(), v.end(), number);
     std::cout << "Nombre d'occurences pour " << number << " : " << occurences << " " << std::endl;
 
     std::cout << std::endl;
