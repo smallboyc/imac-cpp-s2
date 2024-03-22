@@ -91,12 +91,17 @@ bool operator>=(Fraction const &f1, Fraction const &f2)
     return (f1 > f2) || (f1 == f2);
 }
 
-Fraction::operator float() const
+float Fraction::to_float() const
 {
     return static_cast<float>(numerator) / static_cast<float>(denominator);
 }
 
-//Méthodes
+Fraction::operator float() const
+{
+    return to_float();
+}
+
+// Méthodes
 float Fraction::abs()
 {
     return std::abs(static_cast<float>(*this));

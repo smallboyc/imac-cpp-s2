@@ -18,7 +18,6 @@ std::vector<std::string> split_string(std::string const &s)
 {
     std::vector<std::string> result;
     std::string word;
-    size_t last_element{s.size() - 1};
 
     for (auto it{s.begin()}; it != s.end(); it++)
     {
