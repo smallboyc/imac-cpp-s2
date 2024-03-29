@@ -44,3 +44,4 @@ size_t operator_precedence(Operator const op);
 std::vector<Token> infix_to_npi_tokens(std::string const &expression);
 
 void display_NPI_Result(std::vector<Token> const &exit);
+float npi_evaluate(std::vector<Token> const &tokens);

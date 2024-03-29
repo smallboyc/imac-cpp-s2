@@ -79,7 +79,7 @@ float npi_evaluate(std::vector<Token> const &tokens)
             if (tokens[i].op == Operator::ADD)
                 stack.push(last + last_minus_one);
             else if (tokens[i].op == Operator::SUB)
-                stack.push(last - last_minus_one);
+                stack.push(last_minus_one - last);
             else if (tokens[i].op == Operator::MUL)
                 stack.push(last * last_minus_one);
             else if (tokens[i].op == Operator::DIV)

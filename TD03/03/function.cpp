@@ -137,3 +137,33 @@ void display_NPI_Result(std::vector<Token> const &exit)
             std::cout << reverse_operator(exit[i].op) << " ";
     }
 }
+
+float npi_evaluate(std::vector<Token> const &tokens)
+{
+    std::stack<float> stack;
+    int i{0};
+    while (i < tokens.size())
+    {
+        if (tokens[i].type == TokenType::OPERAND)
+            stack.push(tokens[i].value);
+        else
+        {
+            float last = stack.top();
+            stack.pop();
+            float last_minus_one = stack.top();
+            stack.pop();
+            if (tokens[i].op == Operator::ADD)
+                stack.push(last + last_minus_one);
+            else if (tokens[i].op == Operator::SUB)
+                stack.push(last_minus_one - last);
+            else if (tokens[i].op == Operator::MUL)
+                stack.push(last * last_minus_one);
+            else if (tokens[i].op == Operator::DIV)
+                stack.push(last_minus_one / last);
+            else if (tokens[i].op == Operator::POW)
+                stack.push(pow(last_minus_one, last));
+        }
+        i++;
+    }
+    return stack.top();
+}

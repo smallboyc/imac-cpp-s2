@@ -15,7 +15,9 @@ int main()
     std::getline(std::cin, str);
     std::cout << str;
     std::cout << std::endl;
-     std::cout << "notation NPI : ";
+    std::cout << "notation NPI : ";
     display_NPI_Result(infix_to_npi_tokens(str));
+    std::cout << " => ";
+    std::cout << npi_evaluate(infix_to_npi_tokens(str));
     return 0;
 }
