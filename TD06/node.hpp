@@ -13,10 +13,13 @@ struct Node
     void delete_childs();
     void display_infixe() const;
     std::vector<Node const *> prefixe() const;
-    // void postfixe() const;
+    std::vector<Node const *> postfixe() const;
+    int min() const;
+    int max() const;
+    int sum41() const;
 };
 
 Node *create_node(int value);
 Node *&most_left(Node *&node);
-bool remove(Node *&node, int value);
+// bool remove(Node *&node, int value);
 void delete_tree(Node *node);
