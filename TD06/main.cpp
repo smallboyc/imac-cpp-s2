@@ -10,9 +10,12 @@ int main()
     root->insert(4);
     root->insert(11);
     root->right->insert(14);
-    root->left->insert(12);
+    root->right->insert(9);
+    root->left->insert(5);
+    root->left->insert(2);
     root->right->right->insert(27);
     pretty_print_left_right(*root);
+    root->display_infixe();
     std::cout << "Hauteur de l'arbre : " << root->height();
     std::cout << std::endl;
     std::cout << "On libère la mémoire : " << std::endl;

@@ -61,7 +61,21 @@ void Node::delete_childs()
     }
 }
 
-// void Node::display_infixe() const
-// {
+void Node::display_infixe() const
+{
+    // D'abord, je veux choper l'index le plus à gauche au fond de mon arbre
+    if (!(this->is_leaf()))
+    {
+        if (this->left != nullptr)
+        {
+            this->left->display_infixe();
+        }
+    }
 
-// }
+    // si je suis au bout (une feuille) j'affiche
+    std::cout << this->value << std::endl;
+
+    // Après avoir checké à gauche, je check à droite si c'est pas nulle.
+    if (this->right != nullptr)
+        this->right->display_infixe();
+}
