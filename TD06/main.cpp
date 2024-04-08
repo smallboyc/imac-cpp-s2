@@ -14,13 +14,14 @@ int main()
     root->left->insert(5);
     root->left->insert(2);
     root->right->right->insert(27);
+
     pretty_print_left_right(*root);
-    root->display_infixe();
+    // root->display_infixe();
+    // root->prefixe();
+    std::cout << "Noeud le plus à gauche de l'arbre : " << most_left(root)->value << std::endl;
     std::cout << "Hauteur de l'arbre : " << root->height();
     std::cout << std::endl;
     std::cout << "On libère la mémoire : " << std::endl;
-    root->delete_childs();
-    pretty_print_left_right(*root);
-    delete root;
+    delete_tree(root);
     return 0;
 }

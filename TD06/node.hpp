@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 struct Node
 {
@@ -11,6 +12,11 @@ struct Node
     int height() const;
     void delete_childs();
     void display_infixe() const;
+    std::vector<Node const *> prefixe() const;
+    // void postfixe() const;
 };
 
 Node *create_node(int value);
+Node *&most_left(Node *&node);
+bool remove(Node *&node, int value);
+void delete_tree(Node *node);

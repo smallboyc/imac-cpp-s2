@@ -1,7 +1,9 @@
 #include <iostream>
+#include <vector>
 #include "node.hpp"
 #include "utils.hpp"
 
+//1
 Node *create_node(int value)
 {
     Node *newNode = new Node;
@@ -9,11 +11,13 @@ Node *create_node(int value)
     return newNode;
 }
 
+//2
 bool Node::is_leaf() const
 {
     return (this->left == nullptr && this->right == nullptr);
 }
 
+//3
 void Node::insert(int value)
 {
     if (value < this->value)
@@ -22,6 +26,8 @@ void Node::insert(int value)
         this->right = create_node(value);
 }
 
+
+//4
 int Node::height() const
 {
     int leftSize{0};
@@ -39,6 +45,7 @@ int Node::height() const
     return leftSize;
 }
 
+//5
 void Node::delete_childs()
 {
 
@@ -61,16 +68,13 @@ void Node::delete_childs()
     }
 }
 
+//6
 void Node::display_infixe() const
 {
     // D'abord, je veux choper l'index le plus à gauche au fond de mon arbre
     if (!(this->is_leaf()))
-    {
         if (this->left != nullptr)
-        {
             this->left->display_infixe();
-        }
-    }
 
     // si je suis au bout (une feuille) j'affiche
     std::cout << this->value << std::endl;
@@ -78,4 +82,56 @@ void Node::display_infixe() const
     // Après avoir checké à gauche, je check à droite si c'est pas nulle.
     if (this->right != nullptr)
         this->right->display_infixe();
+}
+
+//7
+std::vector<Node const *> Node::prefixe() const
+{
+    std::vector<Node const *> nodes;
+    nodes.push_back(this);
+    // std::cout << this->value << std::endl;
+    if (!(this->is_leaf()))
+    {
+        if (this->left != nullptr)
+        {
+            // On utilise les méthodes données par le td pour le prefixe()
+            auto left_nodes{this->left->prefixe()};
+            nodes.insert(nodes.end(), left_nodes.begin(), left_nodes.end());
+        }
+
+        if (this->right != nullptr)
+        {
+            auto right_nodes{this->right->prefixe()};
+            nodes.insert(nodes.end(), right_nodes.begin(), right_nodes.end());
+        }
+    }
+    return nodes;
+}
+
+//9
+Node *&most_left(Node *&node)
+{
+    Node *current = node;
+    while (!(current->is_leaf()))
+        current = current->left;
+    return current;
+}
+
+//10 -> Pas fini
+bool remove(Node *&node, int value)
+{
+    if (value == node->value && node->is_leaf())
+    {
+        delete node;
+        node = nullptr;
+        return true;
+    }
+}
+
+//11
+void delete_tree(Node *node)
+{
+    node->delete_childs();
+    delete node;
+    node = nullptr;
 }
