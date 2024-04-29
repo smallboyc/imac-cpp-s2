@@ -149,63 +149,46 @@ Node *&most_left(Node *&node)
     return node;
 }
 
-// 10 - Marche pas pour l'instant :(
+// 10
 bool remove(Node *&node, int value)
 {
-    Node *target = get_node(node, value);
-    // Le nœud avec la valeur spécifiée n'existe pas
-    if (target == nullptr)
-        return false;
 
-    // CAS 1 : Node n'a pas de fils
-    if (target->is_leaf())
-    {
-        delete target;
-        target = nullptr;
-        return true;
-    }
-    // CAS 2 : Node n'a qu'un seul fils
-    else if (target->left != nullptr && target->right == nullptr)
-    {
-        Node *tmp = target->left;
-        delete target;
-        target = tmp;
-    }
-    else if (target->right != nullptr && target->left == nullptr)
-    {
-        Node *tmp = target->right;
-        delete target;
-        target = tmp;
-    }
-    // CAS 3 : Node a deux fils
+    if (node->value > value)
+        remove(node->left, value);
+    else if (node->value < value)
+        remove(node->right, value);
     else
     {
-        Node *less = most_left(target->right);
-        target->value = less->value;
-        delete less;
-        less = nullptr;
+        // CAS 1 : Node n'a pas de fils
+        if (node->is_leaf())
+        {
+            delete node;
+            node = nullptr;
+            return true;
+        }
+        // CAS 2 : Node n'a qu'un seul fils
+        else if (node->left != nullptr && node->right == nullptr)
+        {
+            Node *tmp = node->left;
+            delete node;
+            node = tmp;
+        }
+        else if (node->right != nullptr && node->left == nullptr)
+        {
+            Node *tmp = node->right;
+            delete node;
+            node = tmp;
+        }
+        // CAS 3 : Node a deux fils
+        else
+        {
+            Node *less = most_left(node->right);
+            node->value = less->value;
+            remove(node->right, less->value);
+        }
+        return true;
     }
-    return true;
-}
-
-// Fonction pour récupérer le noeud correspondant à la valeur
-Node *get_node(Node *&node, int value)
-{
-    if (node == nullptr)
-        return nullptr;
-
-    if (node->value == value)
-        return node;
-
-    Node *left_result = get_node(node->left, value);
-    if (left_result != nullptr)
-        return left_result;
-
-    Node *right_result = get_node(node->right, value);
-    if (right_result != nullptr)
-        return right_result;
-
-    return nullptr;
+    return false;
 }
 
 // 11
