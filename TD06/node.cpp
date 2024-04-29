@@ -23,9 +23,19 @@ bool Node::is_leaf() const
 void Node::insert(int value)
 {
     if (value < this->value)
-        this->left = create_node(value);
+    {
+        if (this->left != nullptr)
+            this->left->insert(value);
+        else
+            this->left = create_node(value);
+    }
     else
-        this->right = create_node(value);
+    {
+        if (this->right != nullptr)
+            this->right->insert(value);
+        else
+            this->right = create_node(value);
+    }
 }
 
 // 4
@@ -73,9 +83,8 @@ void Node::delete_childs()
 void Node::display_infixe() const
 {
     // D'abord, je veux choper l'index le plus à gauche au fond de mon arbre
-    if (!(this->is_leaf()))
-        if (this->left != nullptr)
-            this->left->display_infixe();
+    if (this->left != nullptr)
+        this->left->display_infixe();
 
     // si je suis au bout (une feuille) j'affiche
     std::cout << this->value << " / ";
@@ -135,34 +144,69 @@ std::vector<Node const *> Node::postfixe() const
 // 9
 Node *&most_left(Node *&node)
 {
-    if (!(node->is_leaf()))
+    if (!(node->is_leaf()) && node->left != nullptr)
         return (most_left(node->left));
     return node;
 }
 
-// 10 -> A terminer
-// bool remove(Node *&node, int value)
-// {
-//     if (value == node->value)
-//         if (node->is_leaf())
-//         {
-//             delete node;
-//             node = nullptr;
-//             return true;
-//         }
-//         else if (node->left != nullptr)
-//         {
-//             Node *tmp = node->left;
-//             node->delete_childs();
-//             node = tmp;
-//         }
-//         else if (node->right != nullptr)
-//         {
-//             Node *tmp = node->right;
-//             node->delete_childs();
-//             node = tmp;
-//         }
-// }
+// 10 - Marche pas pour l'instant :(
+bool remove(Node *&node, int value)
+{
+    Node *target = get_node(node, value);
+    // Le nœud avec la valeur spécifiée n'existe pas
+    if (target == nullptr)
+        return false;
+
+    // CAS 1 : Node n'a pas de fils
+    if (target->is_leaf())
+    {
+        delete target;
+        target = nullptr;
+        return true;
+    }
+    // CAS 2 : Node n'a qu'un seul fils
+    else if (target->left != nullptr && target->right == nullptr)
+    {
+        Node *tmp = target->left;
+        delete target;
+        target = tmp;
+    }
+    else if (target->right != nullptr && target->left == nullptr)
+    {
+        Node *tmp = target->right;
+        delete target;
+        target = tmp;
+    }
+    // CAS 3 : Node a deux fils
+    else
+    {
+        Node *less = most_left(target->right);
+        target->value = less->value;
+        delete less;
+        less = nullptr;
+    }
+    return true;
+}
+
+// Fonction pour récupérer le noeud correspondant à la valeur
+Node *get_node(Node *&node, int value)
+{
+    if (node == nullptr)
+        return nullptr;
+
+    if (node->value == value)
+        return node;
+
+    Node *left_result = get_node(node->left, value);
+    if (left_result != nullptr)
+        return left_result;
+
+    Node *right_result = get_node(node->right, value);
+    if (right_result != nullptr)
+        return right_result;
+
+    return nullptr;
+}
 
 // 11
 void delete_tree(Node *node)
@@ -173,7 +217,6 @@ void delete_tree(Node *node)
 }
 
 // 12
-
 int Node::min() const
 {
     std::vector<Node const *> getNodes{this->postfixe()};
