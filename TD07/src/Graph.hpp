@@ -31,5 +31,4 @@ namespace Graph
         void print_BFS(int const start) const;
     };
     WeightedGraph build_from_adjacency_matrix(std::vector<std::vector<float>> const &adjacency_matrix);
-
-} // namespace
+}
