@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <stack>
+#include <queue>
 #include <utility>
 #include "Graph.hpp"
 
@@ -49,32 +50,46 @@ namespace Graph
 
     void WeightedGraph::print_DFS(int const start) const
     {
-        std::stack<std::pair<int, std::vector<WeightedGraphEdge>>> nodes_stack;
-        std::pair<int, std::vector<WeightedGraphEdge>> start_node{};
-        std::vector<int> id_node_list{};
-        for (auto &node : this->adjacency_list)
+        std::stack<int> stack;
+        std::vector<int> already_checked_ids;
+        int current{start};
+        stack.push(current);
+        while (!stack.empty())
         {
-            if (node.first == start)
-                start_node = node;
-        }
-        nodes_stack.push(start_node);
-        id_node_list.push_back(start);
-        while (!nodes_stack.empty())
-        {
-            std::cout << nodes_stack.top().first << std::endl;
-            nodes_stack.pop();
-            for (auto edges : start_node.second)
+            std::cout << stack.top() << std::endl;
+            current = stack.top();
+            stack.pop();
+            for (auto tos : this->adjacency_list.at(current))
             {
-                int target = edges.to;
-                for (auto &node : this->adjacency_list)
+                if (std::find(already_checked_ids.begin(), already_checked_ids.end(), tos.to) == already_checked_ids.end())
                 {
-                    if (node.first == target && std::find(id_node_list.begin(), id_node_list.end(), target) == id_node_list.end())
-                    {
-                        nodes_stack.push(node);
-                        id_node_list.push_back(target);
-                    }
+                    stack.push(tos.to);
+                    already_checked_ids.push_back(tos.to);
                 }
             }
         }
     }
+
+    void WeightedGraph::print_BFS(int const start) const
+    {
+        std::queue<int> queue;
+        std::vector<int> already_checked_ids;
+        int current{start};
+        queue.push(current);
+        while (!queue.empty())
+        {
+            std::cout << queue.front() << std::endl;
+            current = queue.front();
+            queue.pop();
+            for (auto tos : this->adjacency_list.at(current))
+            {
+                if (std::find(already_checked_ids.begin(), already_checked_ids.end(), tos.to) == already_checked_ids.end())
+                {
+                    queue.push(tos.to);
+                    already_checked_ids.push_back(tos.to);
+                }
+            }
+        }
+    }
+
 }

@@ -8,9 +8,14 @@ int main()
 {
     // Graph créé à partir d'un matrice
     std::vector<std::vector<float>> MATRIX{
-        {0, 1, 1},
-        {2, 0, 1},
-        {1, 1, 0}};
+        {0, 1, 1, 0, 0, 0, 0}, // A
+        {0, 0, 0, 1, 1, 0, 0}, // B
+        {0, 0, 0, 0, 0, 1, 1}, // C
+        {0, 0, 0, 0, 0, 0, 0}, // D
+        {0, 0, 0, 0, 0, 0, 0}, // E
+        {0, 0, 0, 0, 0, 0, 0}, // F
+        {0, 0, 0, 0, 0, 0, 0}, // G
+    };
 
     std::cout << "Matrice adjacente : " << std::endl;
     std::cout << MATRIX << std::endl;
@@ -46,6 +51,10 @@ int main()
         std::cout << "Graphes différents !" << std::endl;
 
     gap();
-    graph_from_SCRATCH.print_DFS(0);
+    std::cout << "Parcours en PROFONDEUR : " << std::endl;
+    graph_from_MATRIX.print_DFS(0);
+    gap();
+    std::cout << "Parcours en LARGEUR : " << std::endl;
+    graph_from_MATRIX.print_BFS(0);
     return 0;
 }
