@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <stack>
 #include <utility>
 #include "Graph.hpp"
 
@@ -44,5 +45,36 @@ namespace Graph
                 if (adjacency_matrix[i][j] != 0)
                     graph.add_directed_edge(i, j, adjacency_matrix[i][j]);
         return graph;
+    }
+
+    void WeightedGraph::print_DFS(int const start) const
+    {
+        std::stack<std::pair<int, std::vector<WeightedGraphEdge>>> nodes_stack;
+        std::pair<int, std::vector<WeightedGraphEdge>> start_node{};
+        std::vector<int> id_node_list{};
+        for (auto &node : this->adjacency_list)
+        {
+            if (node.first == start)
+                start_node = node;
+        }
+        nodes_stack.push(start_node);
+        id_node_list.push_back(start);
+        while (!nodes_stack.empty())
+        {
+            std::cout << nodes_stack.top().first << std::endl;
+            nodes_stack.pop();
+            for (auto edges : start_node.second)
+            {
+                int target = edges.to;
+                for (auto &node : this->adjacency_list)
+                {
+                    if (node.first == target && std::find(id_node_list.begin(), id_node_list.end(), target) == id_node_list.end())
+                    {
+                        nodes_stack.push(node);
+                        id_node_list.push_back(target);
+                    }
+                }
+            }
+        }
     }
 }

@@ -28,8 +28,12 @@ size_t folding_string_ordered_hash(std::string const &s, size_t max)
 size_t polynomial_rolling_hash(const std::string &s, size_t p, size_t m)
 {
     size_t hash{0};
+    size_t power{1};
     for (size_t i{0}; i < s.size(); i++)
-        hash += s[i] * std::pow(p, i);
+    {
+        hash += s[i] * power;
+        power *= p;
+    }
     return hash % m;
 }
 

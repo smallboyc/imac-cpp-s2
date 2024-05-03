@@ -46,5 +46,6 @@ int main()
         std::cout << "Graphes différents !" << std::endl;
 
     gap();
+    graph_from_SCRATCH.print_DFS(0);
     return 0;
 }
