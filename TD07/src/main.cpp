@@ -56,5 +56,33 @@ int main()
     gap();
     std::cout << "Parcours en LARGEUR : " << std::endl;
     graph_from_MATRIX.print_BFS(0);
+    gap();
+
+    // DIJKSTRA
+    //  Graph créé à partir d'un matrice
+    std::vector<std::vector<float>> dijkstra_MATRIX{
+        //   A  B  C  D  E  F
+        {0, 1, 5, 2, 0, 0}, // A
+        {0, 0, 4, 5, 0, 0}, // B
+        {0, 0, 0, 0, 3, 4}, // C
+        {0, 0, 2, 0, 5, 0}, // D
+        {0, 0, 0, 0, 0, 3}, // E
+        {0, 0, 0, 0, 0, 0}, // F
+    };
+    std::cout << build_from_adjacency_matrix(dijkstra_MATRIX) << std::endl;
+    int start{0};
+    int end{5};
+    std::unordered_map<int, std::pair<float, int>> DISTANCES{dijkstra(build_from_adjacency_matrix(dijkstra_MATRIX), start, end)};
+
+    auto finalEdge{DISTANCES.at(end)};
+    std::cout << "Distance minimale : " << finalEdge.first << std::endl;
+    std::cout << (char)('A' + end) << " -> "; 
+    while (finalEdge.second != start)
+    {
+        std::cout << (char)('A' + finalEdge.second) << " -> ";
+        finalEdge = DISTANCES.at(finalEdge.second);
+    }
+    std::cout << (char)('A' + start) << std::endl;
+
     return 0;
 }
